@@ -38,7 +38,6 @@ default-features = false
 
 [dependencies.simd-adler32]
 version = "0.3"
-default-features = false
 optional = true
 
 [dependencies.miniz_oxide]
