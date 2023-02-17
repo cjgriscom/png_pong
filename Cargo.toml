@@ -32,6 +32,15 @@ maintenance = { status = "actively-developed" }
 [dependencies.pix]
 version = "0.13"
 
+[dependencies.adler]
+version = "1.0"
+default-features = false
+
+[dependencies.simd-adler32]
+version = "0.3"
+default-features = false
+optional = true
+
 [dependencies.miniz_oxide]
 version = "0.7"
 
@@ -60,3 +69,4 @@ opt-level = 2
 
 [features]
 default = []
+simd = ['simd-adler32']
