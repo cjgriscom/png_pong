@@ -1,28 +1,23 @@
-// PNG Pong
-//
-// Copyright © 2019-2021 Jeron Aldaron Lau
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// https://apache.org/licenses/LICENSE-2.0>, or the Zlib License, <LICENSE-ZLIB
-// or http://opensource.org/licenses/Zlib>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
+use std::{any::TypeId, io::Write};
 
-use crate::{
-    adam7,
-    bitstream::{BitstreamReader, BitstreamWriter},
-    chunk::{ColorType, ImageHeader},
-    chunk::{ImageData, ImageEnd, Palette as PaletteChunk, Transparency},
-    encode::{filter, ChunkEnc, Error as EncoderError, FilterStrategy, Result},
-    encoder::Enc,
-    PngRaster, Step,
-};
 use pix::{
     el::Pixel,
     gray::{SGray16, SGray8, SGraya16, SGraya8},
     rgb::{SRgb16, SRgb8, SRgba16, SRgba8},
     Raster,
 };
-use std::{any::TypeId, io::Write};
+
+use crate::{
+    adam7,
+    bitstream::{BitstreamReader, BitstreamWriter},
+    chunk::{
+        ColorType, ImageData, ImageEnd, ImageHeader, Palette as PaletteChunk,
+        Transparency,
+    },
+    encode::{filter, ChunkEnc, Error as EncoderError, FilterStrategy, Result},
+    encoder::Enc,
+    PngRaster, Step,
+};
 
 pub trait AsRaster {
     fn get_header(&self, interlace: bool) -> ImageHeader;
@@ -265,7 +260,7 @@ fn add_padding_bits(
     ilinebits: usize,
     h: usize,
 ) {
-    let diff = olinebits - ilinebits; /*bit pointers*/
+    let diff = olinebits - ilinebits; /* bit pointers */
     let mut out_buf = Vec::with_capacity(h * ((ilinebits + diff) / 8));
     let mut out_stream = BitstreamWriter::new(&mut out_buf);
     let mut in_stream =
@@ -310,9 +305,10 @@ fn pre_process_scanlines(
         let bpp = bpp as usize;
         let outsize = h + (h * ((w * bpp + 7) / 8));
         let mut out = vec![0u8; outsize];
-        /*image size plus an extra byte per scanline + possible padding bits*/
+        /* image size plus an extra byte per scanline + possible padding bits */
         if bpp < 8 && w * bpp != ((w * bpp + 7) / 8) * 8 {
-            let mut padded = vec![0u8; h * ((w * bpp + 7) / 8)]; /*we can immediately filter into the out buffer, no other steps needed*/
+            let mut padded = vec![0u8; h * ((w * bpp + 7) / 8)]; /* we can immediately filter into the out buffer, no other steps
+                                                                  * needed */
             add_padding_bits(
                 &mut padded,
                 inp,
@@ -337,7 +333,7 @@ fn pre_process_scanlines(
         let (passw, passh, filter_passstart, padded_passstart, passstart) =
             adam7::get_pass_values(width, height, bpp);
         let outsize = filter_passstart[7];
-        /*image size plus an extra byte per scanline + possible padding bits*/
+        /* image size plus an extra byte per scanline + possible padding bits */
         let mut out = vec![0u8; outsize as usize];
         let mut adam7 = vec![0u8; passstart[7] as usize + 1];
         adam7::interlace(&mut adam7, inp, width, height, bpp);

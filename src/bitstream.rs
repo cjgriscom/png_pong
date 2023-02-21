@@ -1,12 +1,3 @@
-// PNG Pong
-//
-// Copyright © 2019-2021 Jeron Aldaron Lau
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// https://apache.org/licenses/LICENSE-2.0>, or the Zlib License, <LICENSE-ZLIB
-// or http://opensource.org/licenses/Zlib>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 //! Read and write from a reversed bit stream
 
 use std::io::{Bytes, Read, Result, Write};
@@ -33,9 +24,10 @@ impl<W: Write> BitstreamWriter<W> {
     }
 
     pub(super) fn write(&mut self, bit: bool) -> Result<()> {
-        /*the current bit in bitstream must be 0 for this to work*/
+        /* the current bit in bitstream must be 0 for this to work */
         if bit {
-            /*earlier bit of huffman code is in a lesser significant bit of an earlier byte*/
+            /* earlier bit of huffman code is in a lesser significant bit of
+             * an earlier byte */
             self.byte |= 1 << (7 - self.bitpointer);
         }
         self.bitpointer += 1;

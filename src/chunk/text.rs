@@ -1,15 +1,7 @@
-// PNG Pong
-//
-// Copyright © 2019-2021 Jeron Aldaron Lau
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// https://apache.org/licenses/LICENSE-2.0>, or the Zlib License, <LICENSE-ZLIB
-// or http://opensource.org/licenses/Zlib>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
+use std::io::{Read, Write};
 
 use super::{Chunk, DecoderError, EncoderError};
 use crate::{consts, decoder::Parser, encoder::Enc};
-use std::io::{Read, Write};
 
 /// Non-International Text Chunk Data (tEXt and zTXt)
 #[derive(Clone, Debug)]
@@ -18,8 +10,8 @@ pub struct Text {
     /// represents, e.g. Title, Author, Description, or anything else.  Minimum
     /// of 1 character, and maximum 79 characters long.
     pub key: String,
-    /// The actual message.  It's discouraged to use a single line length longer
-    /// than 79 characters
+    /// The actual message.  It's discouraged to use a single line length
+    /// longer than 79 characters
     pub val: String,
 }
 

@@ -1,19 +1,10 @@
-// PNG Pong
-//
-// Copyright © 2019-2021 Jeron Aldaron Lau
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// https://apache.org/licenses/LICENSE-2.0>, or the Zlib License, <LICENSE-ZLIB
-// or http://opensource.org/licenses/Zlib>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
+use std::io::{ErrorKind, Read};
 
 use crate::{
     consts,
     decode::{Chunks, Error, Result, Steps},
     Step,
 };
-use std::convert::TryInto;
-use std::io::{ErrorKind, Read};
 
 /// Chunk parser.
 #[derive(Debug)]
@@ -228,8 +219,8 @@ impl<R: Read> Decoder<R> {
 }
 
 impl<R: Read> IntoIterator for Decoder<R> {
-    type Item = Result<Step>;
     type IntoIter = Steps<R>;
+    type Item = Result<Step>;
 
     /// Convert into a raster step `Iterator`
     fn into_iter(self) -> Self::IntoIter {

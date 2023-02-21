@@ -1,12 +1,3 @@
-// PNG Pong
-//
-// Copyright © 2019-2021 Jeron Aldaron Lau
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// https://apache.org/licenses/LICENSE-2.0>, or the Zlib License, <LICENSE-ZLIB
-// or http://opensource.org/licenses/Zlib>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 //! Low-level PNG API
 //!
 //! A PNG file consists of a sequence of [`Chunk`](enum.Chunk.html)s in a
@@ -54,9 +45,12 @@
 //!   - **Multiple** `CompressedText` "zTXt"
 //!   - **Optional** `AnimationControl` "acTL" (APNG, If didn't appear earlier)
 //!   - **Optional** `FrameControl` "fcTL" (APNG, If didn't appear earlier)
-//!   - **Optional** `ImageOffset` "oFFs" (*Extension*, If didn't appear earlier)
-//!   - **Optional** `PixelCalibration` "pCAL" (*Extension*, If didn't appear earlier)
-//!   - **Optional** `SubjectPhysical` "sCAL" (*Extension*, If didn't appear earlier)
+//!   - **Optional** `ImageOffset` "oFFs" (*Extension*, If didn't appear
+//!     earlier)
+//!   - **Optional** `PixelCalibration` "pCAL" (*Extension*, If didn't appear
+//!     earlier)
+//!   - **Optional** `SubjectPhysical` "sCAL" (*Extension*, If didn't appear
+//!     earlier)
 //!   - **Multiple** `GifGraphicControlExt` "gIFg" (*Extension*)
 //!   - **Multiple** `GifApplicationExt` "gIFx" (*Extension*)
 //! - **Multiple** `ImageData` "IDAT"
@@ -72,8 +66,8 @@
 //! - **Required** `ImageEnd` "IEND"
 
 use crate::{
-    decode::Error as DecoderError, decode::Result as DecoderResult,
-    encode::Error as EncoderError, encode::Result as EncoderResult,
+    decode::{Error as DecoderError, Result as DecoderResult},
+    encode::{Error as EncoderError, Result as EncoderResult},
 };
 
 mod bkgd;
@@ -89,21 +83,32 @@ mod trns;
 mod unknown;
 mod ztxt;
 
-// Required
-pub use idat::ImageData;
-pub use iend::ImageEnd;
-pub use ihdr::{ColorType, ImageHeader};
-pub use plte::Palette;
-
-// Optional
-pub use bkgd::Background;
-pub use itxt::InternationalText;
-pub use phys::Physical;
-pub use text::Text;
-pub use time::Time;
-pub use trns::Transparency;
-pub use unknown::Unknown;
-pub use ztxt::CompressedText;
+pub use self::{
+    // Optional
+    bkgd::Background,
+    // Required
+    idat::ImageData,
+    // Required
+    iend::ImageEnd,
+    // Required
+    ihdr::{ColorType, ImageHeader},
+    // Optional
+    itxt::InternationalText,
+    // Optional
+    phys::Physical,
+    // Required
+    plte::Palette,
+    // Optional
+    text::Text,
+    // Optional
+    time::Time,
+    // Optional
+    trns::Transparency,
+    // Optional
+    unknown::Unknown,
+    // Optional
+    ztxt::CompressedText,
+};
 
 /// A chunk within a PNG file.
 #[derive(Debug)]

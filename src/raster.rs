@@ -1,13 +1,3 @@
-// PNG Pong
-//
-// Copyright © 2019-2021 Jeron Aldaron Lau
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// https://apache.org/licenses/LICENSE-2.0>, or the Zlib License, <LICENSE-ZLIB
-// or http://opensource.org/licenses/Zlib>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
-use crate::chunk::{ColorType, ImageHeader};
 use pix::{
     chan::{Ch16, Ch8},
     el::Pixel,
@@ -15,6 +5,8 @@ use pix::{
     rgb::{SRgb16, SRgb8, SRgba16, SRgba8},
     Palette, Raster,
 };
+
+use crate::chunk::{ColorType, ImageHeader};
 
 /// A Raster of one of the PNG types (all are sRGB gamma).
 /// PNGs with less than 8 bits per channel are scaled up to 8 bits per channel.

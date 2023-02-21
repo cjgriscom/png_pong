@@ -1,12 +1,3 @@
-// PNG Pong
-//
-// Copyright © 2019-2021 Jeron Aldaron Lau
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// https://apache.org/licenses/LICENSE-2.0>, or the Zlib License, <LICENSE-ZLIB
-// or http://opensource.org/licenses/Zlib>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use std::io::{Read, Write};
 
 use crate::{
@@ -45,7 +36,7 @@ impl ColorType {
     /// in the struct
     pub(crate) fn bpp(self, bit_depth: u8) -> u8 {
         assert!((1..=16).contains(&bit_depth));
-        /*bits per pixel is amount of channels * bits per channel*/
+        /* bits per pixel is amount of channels * bits per channel */
         let ch = self.channels();
         ch * if ch > 1 {
             if bit_depth == 8 {
@@ -138,11 +129,12 @@ impl ImageHeader {
         };
         color_type.check_png_color_validity(bit_depth)?;
         if parse.u8()? != 0 {
-            /*error: only compression method 0 is allowed in the specification*/
+            /* error: only compression method 0 is allowed in the
+             * specification */
             return Err(DecoderError::CompressionMethod);
         }
         if parse.u8()? != 0 {
-            /*error: only filter method 0 is allowed in the specification*/
+            /* error: only filter method 0 is allowed in the specification */
             return Err(DecoderError::FilterMethod);
         }
         let interlace = match parse.u8()? {
@@ -163,13 +155,13 @@ impl ImageHeader {
     /// get the total amount of bits per pixel, based on colortype and bitdepth
     /// in the struct
     pub(crate) fn bpp(&self) -> u8 {
-        self.color_type.bpp(self.bit_depth) /*4 or 6*/
+        self.color_type.bpp(self.bit_depth) /* 4 or 6 */
     }
 
     /// Returns the byte size of a raw image buffer with given width, height and
     /// color mode
     pub(crate) fn raw_size(&self) -> usize {
-        /*will not overflow for any color type if roughly w * h < 268435455*/
+        /* will not overflow for any color type if roughly w * h < 268435455 */
         let bpp = self.bpp() as usize;
         let n = self.width as usize * self.height as usize;
         ((n / 8) * bpp) + ((n & 7) * bpp + 7) / 8

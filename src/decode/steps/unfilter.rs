@@ -1,12 +1,3 @@
-// PNG Pong
-//
-// Copyright © 2019-2021 Jeron Aldaron Lau
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// https://apache.org/licenses/LICENSE-2.0>, or the Zlib License, <LICENSE-ZLIB
-// or http://opensource.org/licenses/Zlib>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use crate::{
     adam7,
     bitstream::{BitstreamReader, BitstreamWriter},
@@ -88,7 +79,7 @@ fn remove_padding_bits_aliased(
     ilinebits: usize,
     h: usize,
 ) {
-    let diff = ilinebits - olinebits; /*input and output bit pointers*/
+    let diff = ilinebits - olinebits; /* input and output bit pointers */
     let mut ibp = 0;
     let mut out = Vec::with_capacity(olinebits);
     let mut out_stream = BitstreamWriter::new(&mut out);
@@ -121,12 +112,13 @@ fn unfilter_aliased(
     bpp: usize,
 ) -> Result<(), DecoderError> {
     let mut prevline = None;
-    // bytewidth is used for filtering, is 1 when bpp < 8, number of bytes per pixel otherwise
+    // bytewidth is used for filtering, is 1 when bpp < 8, number of bytes per
+    // pixel otherwise
     let bytewidth = (bpp + 7) / 8;
     let linebytes = (w * bpp + 7) / 8;
     for y in 0..h {
         let outindex = linebytes * y;
-        let inindex = (1 + linebytes) * y; /*the extra filterbyte added to each row*/
+        let inindex = (1 + linebytes) * y; /* the extra filterbyte added to each row */
         let filter_type = inout[in_off + inindex];
         unfilter_scanline_aliased(
             inout,
@@ -158,7 +150,7 @@ fn remove_padding_bits(
     ilinebits: usize,
     h: usize,
 ) {
-    let diff = ilinebits - olinebits; /*input and output bit pointers*/
+    let diff = ilinebits - olinebits; /* input and output bit pointers */
     let mut ibp = 0;
     let mut out_buf = Vec::new();
     let mut out_stream = BitstreamWriter::new(&mut out_buf);
@@ -198,10 +190,11 @@ fn unfilter(
 ) -> Result<(), DecoderError> {
     let mut prevline = None;
 
-    /*bytewidth is used for filtering, is 1 when bpp < 8, number of bytes per pixel otherwise*/
+    /* bytewidth is used for filtering, is 1 when bpp < 8, number of bytes
+     * per pixel otherwise */
     let bytewidth = (bpp as usize + 7) / 8;
     let linebytes = (width as usize * bpp as usize + 7) / 8;
-    let in_linebytes = 1 + linebytes; /*the extra filterbyte added to each row*/
+    let in_linebytes = 1 + linebytes; /* the extra filterbyte added to each row */
 
     for (out_line, in_line) in out
         .chunks_mut(linebytes)

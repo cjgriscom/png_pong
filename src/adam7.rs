@@ -1,12 +1,3 @@
-// PNG Pong
-//
-// Copyright © 2019-2021 Jeron Aldaron Lau
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// https://apache.org/licenses/LICENSE-2.0>, or the Zlib License, <LICENSE-ZLIB
-// or http://opensource.org/licenses/Zlib>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 // FIXME: API to get Adam7 image before fully loaded (the reason it exists).
 // And refactor code to depend on that to get the final image.
 
@@ -121,7 +112,9 @@ pub(crate) fn deinterlace(out: &mut [u8], inp: &[u8], w: u32, h: u32, bpp: u8) {
                     .unwrap();
                     for _ in 0..bpp {
                         let bit = in_stream.read().unwrap().unwrap();
-                        // note that this function assumes the out buffer is completely 0, use set_bit_of_reversed_stream otherwise
+                        // note that this function assumes the out buffer is
+                        // completely 0, use set_bit_of_reversed_stream
+                        // otherwise
                         set_bit_of_reversed_stream0(&mut obp, out, bit);
                     }
                 }
@@ -193,9 +186,10 @@ pub(crate) fn set_bit_of_reversed_stream0(
     bitstream: &mut [u8],
     bit: bool,
 ) {
-    /*the current bit in bitstream must be 0 for this to work*/
+    /* the current bit in bitstream must be 0 for this to work */
     if bit {
-        /*earlier bit of huffman code is in a lesser significant bit of an earlier byte*/
+        /* earlier bit of huffman code is in a lesser significant bit of an
+         * earlier byte */
         bitstream[(*bitpointer) >> 3] |= 1 << (7 - ((*bitpointer) & 7));
     }
     *bitpointer += 1;
