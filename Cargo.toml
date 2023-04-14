@@ -32,13 +32,11 @@ maintenance = { status = "actively-developed" }
 [dependencies.pix]
 version = "0.13"
 
-[dependencies.adler]
-version = "1.0"
-default-features = false
+[target.'cfg(not(target_arch = "aarch64"))'.dependencies]
+simd-adler32 = { version = "0.3" }
 
-[dependencies.simd-adler32]
-version = "0.3"
-optional = true
+[target.'cfg(target_arch = "aarch64")'.dependencies]
+libdeflate-sys = "0.13"
 
 [dependencies.miniz_oxide]
 version = "0.7"
@@ -68,4 +66,3 @@ opt-level = 2
 
 [features]
 default = []
-simd = ['simd-adler32']

@@ -44,7 +44,6 @@
     html_favicon_url = "https://raw.githubusercontent.com/AldaronLau/png_pong/master/res/icon.png",
     html_root_url = "https://docs.rs/png_pong"
 )]
-#![forbid(unsafe_code)]
 #![warn(
     anonymous_parameters,
     missing_copy_implementations,

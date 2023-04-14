@@ -78,18 +78,29 @@ pub(crate) fn compress(outv: &mut Vec<u8>, inp: &[u8], level: u8) {
     outv.extend(adler32_val.to_be_bytes().iter());
 }
 
-/// Return the Adler32 of the bytes data[0..len-1]
-#[cfg(not(feature = "simd"))]
-fn adler32(data: &[u8]) -> u32 {
-    let mut adler = adler::Adler32::new();
-    adler.write_slice(data);
-    adler.checksum()
-}
-
 /// Return the Adler32 of the bytes data[0..len-1] (simd)
-#[cfg(feature = "simd")]
+#[cfg(not(target_arch = "aarch64"))]
 fn adler32(data: &[u8]) -> u32 {
     let mut adler = simd_adler32::Adler32::new();
     adler.write(data);
     adler.finish()
+}
+
+#[cfg(target_arch = "aarch64")]
+fn adler32(data: &[u8]) -> u32 {
+    use std::os::raw::c_void;
+    use libdeflate_sys::*;
+    unsafe {
+        // Initialize the adler32 value, usually 1 for a new checksum
+        let adler32_initial: u32 = 1;
+
+        // Convert the slice to a raw pointer
+        let buffer_ptr: *const c_void = data.as_ptr() as *const c_void;
+
+        // Get the length of the slice
+        let buffer_len: usize = data.len();
+
+        // Call the function
+        libdeflate_adler32(adler32_initial, buffer_ptr, buffer_len)
+    }
 }
